@@ -12,9 +12,11 @@ Vagrant.configure("2") do |config|
     useradd --shell /bin/bash --create-home alice || true
     useradd --shell /bin/bash --create-home bob || true
     useradd --shell /bin/bash --create-home carol || true
+    useradd --shell /bin/bash --create-home patrick || true
     echo alice:1234 | chpasswd
     echo bob:azerty | chpasswd
     echo carol:secret | chpasswd
+    echo patrick:123test | chpasswd
     echo Enabling password auth
     sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
     systemctl restart ssh.service
@@ -29,11 +31,11 @@ Vagrant.configure("2") do |config|
   config.vm.define "srv" do |b|
     b.vm.box = "debian/contrib-stretch64"
     b.vm.network "private_network", ip: "192.168.56.11"
-    b.vm.network "forwarded_port", guest: 80, host: 8081
+    b.vm.network "forwarded_port", guest 80, host: 8080
     b.vm.hostname = "srv"
 
     b.vm.provision "shell", inline: <<-SHELL
-      apt-get -y install apache2 ruby
+      apt-get -y install apache2 ruby php
       a2enmod cgi
       systemctl restart apache2.service
       cp /vagrant/srv/test1.cgi /usr/lib/cgi-bin/test1.cgi
