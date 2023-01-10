@@ -16,6 +16,7 @@ Vagrant.configure("2") do |config|
     echo alice:1234 | chpasswd
     echo bob:azerty | chpasswd
     echo carol:secret | chpasswd
+    echo patrick:123test | chpasswd
     echo Enabling password auth
     sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
     systemctl restart ssh.service
@@ -30,6 +31,7 @@ Vagrant.configure("2") do |config|
   config.vm.define "srv" do |b|
     b.vm.box = "debian/contrib-stretch64"
     b.vm.network "private_network", ip: "192.168.56.11"
+    b.vm.network "forwarded_port", guest 80, host: 8081
     b.vm.hostname = "srv"
 
     b.vm.provision "shell", inline: <<-SHELL
