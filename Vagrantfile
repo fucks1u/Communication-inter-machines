@@ -12,9 +12,11 @@ Vagrant.configure("2") do |config|
     useradd --shell /bin/bash --create-home alice || true
     useradd --shell /bin/bash --create-home bob || true
     useradd --shell /bin/bash --create-home carol || true
+    useradd --shell /bin/bash --create-home patrick || true
     echo alice:1234 | chpasswd
     echo bob:azerty | chpasswd
     echo carol:secret | chpasswd
+    echo patrick:patrick1234 | chpasswd
     echo Enabling password auth
     sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
     systemctl restart ssh.service
