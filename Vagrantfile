@@ -12,11 +12,9 @@ Vagrant.configure("2") do |config|
     useradd --shell /bin/bash --create-home alice || true
     useradd --shell /bin/bash --create-home bob || true
     useradd --shell /bin/bash --create-home carol || true
-    useradd --shell /bin/bash --create-home patrick || true
     echo alice:1234 | chpasswd
     echo bob:azerty | chpasswd
     echo carol:secret | chpasswd
-    echo patrick:123test | chpasswd
     echo Enabling password auth
     sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
     systemctl restart ssh.service
@@ -35,7 +33,7 @@ Vagrant.configure("2") do |config|
     b.vm.hostname = "srv"
 
     b.vm.provision "shell", inline: <<-SHELL
-      apt-get -y install apache2 ruby php
+      apt-get -y install apache2 ruby 
       a2enmod cgi
       systemctl restart apache2.service
       cp /vagrant/srv/test1.cgi /usr/lib/cgi-bin/test1.cgi
